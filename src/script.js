@@ -1,72 +1,36 @@
-// write your code here
-const divMenu = document.getElementById('ramen-menu')
+// script.js
 
-const fullRamenImg = document.querySelector('.detail-image')
+const ramenItems = document.querySelectorAll('.ramen-item');
+const selectedRamenImage = document.getElementById('selected-ramen-image');
+const selectedRamenName = document.getElementById('selected-ramen-name');
+const ratingInput = document.getElementById('rating');
+const commentInput = document.getElementById('comment');
+const submitButton = document.getElementById('submit-rating');
 
-const nameRamen = document.querySelector('#nameRamen')
+ramenItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const image = item.getAttribute('data-image');
+        const name = item.getAttribute('data-name');
+        selectedRamenImage.src = image;
+        selectedRamenName.textContent = name;
+    });
+});
 
-const restaurant = document.querySelector('.restaurant')
+submitButton.addEventListener('click', () => {
+    const rating = ratingInput.value;
+    const comment = commentInput.value;
+    const ramenName = selectedRamenName.textContent;
+    const ramenImage = selectedRamenImage.src;
 
-const ramenRating = document.getElementById('rating-display')
+    // Here you can add logic to store the rating and comment
+    // For example, you can send it to a server or store it in local storage
 
-const ramenComment = document.getElementById('comment-display')
+    console.log('Ramen:', ramenName);
+    console.log('Image:', ramenImage);
+    console.log('Rating:', rating);
+    console.log('Comment:', comment);
 
-const form = document.querySelector('form')
-
-//gets ramen from database
-fetch('http://localhost:3000/ramens')
-.then(resp => resp.json())
-.then(data => {
-
-
-    data.forEach(ramen => {
-        showRamen(ramen)
-    })
-
-})
-
-//add new ramen when submitted
-form.addEventListener('submit',() => {
-    const inputs = document.querySelectorAll('input')
-    const comments = document.querySelector('textarea')
-
-    fetch('http://localhost:3000/ramens', {
-        method : "POST",
-        headers : {
-            "Content-Type" : "application/json",
-            Accept : "application/json"
-        },
-        body : JSON.stringify({
-            name : inputs[0].value,
-            restaurant : inputs[1].value,
-            image : inputs[2].value,
-            rating : inputs[3].value,
-            comment : comments.value
-        })
-    })
-    .then(resp => resp.json())
-    .then(data => {
-        showRamen(data)
-    })
-})
-
-
-
-//show ramen on DOM
-function showRamen (ramen) {
-    const imgRamen = document.createElement('img')
-
-    imgRamen.src= ramen.image
-
-    divMenu.append(imgRamen)
-
-    imgRamen.addEventListener('click', () => {
-        fullRamenImg.src = ramen.image
-        nameRamen.innerText = ramen.name
-        restaurant.innerText = ramen.restaurant
-
-        ramenRating.innerText = ramen.rating
-        ramenComment.innerText = ramen.comment
-    })
-
-}
+    // Clear the form
+    ratingInput.value = '';
+    commentInput.value = '';
+});
