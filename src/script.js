@@ -1,36 +1,101 @@
-// script.js
+document.addEventListener('DOMContentLoaded', () => {
+    // Get references to the DOM elements
+    const ramenImages = document.querySelectorAll('#ramen img');
+    const ramenName = document.querySelector('.name');
+    const ramenRestaurant = document.querySelector('.restaurant');
+    const ratingDisplay = document.querySelector('#rating-display');
+    const commentDisplay = document.querySelector('#comment-display');
+    const newRamenForm = document.querySelector('#new-ramen');
 
-const ramenItems = document.querySelectorAll('.ramen-item');
-const selectedRamenImage = document.getElementById('selected-ramen-image');
-const selectedRamenName = document.getElementById('selected-ramen-name');
-const ratingInput = document.getElementById('rating');
-const commentInput = document.getElementById('comment');
-const submitButton = document.getElementById('submit-rating');
+    // Define an array of ramen objects (you can expand this with more data)
+    const ramenData = [
+        {
+            name: 'Gyukotsu',
+            restaurant: 'Ichiran',
+            image: 'assets/ramen/gyukotsu.jpg',
+            rating: 8,
+            comment: 'Mouth-watering.',
+        },
+        {
+            name: 'Kojiro',
+            restaurant: 'Menya',
+            image: 'assets/ramen/kojiro.jpg',
+            rating: 6,
+            comment: 'Very flavorful.',
+        },
+        {
+            name: 'Naruto',
+            restaurant: 'Ramen Nagi',
+            image: 'assets/ramen/naruto.jpg',
+            rating: 7,
+            comment: 'Yummy.',
+        },
+        {
+            name: 'Nirvana',
+            restaurant: 'Ramen-ya',
+            image: 'assets/ramen/nirvana.jpg',
+            rating: 8,
+            comment: 'Sweet and tasty.',
+        },
+        {
+            name: 'Shoyu',
+            restaurant: 'Ichiran',
+            image: 'assets/ramen/shoyu.jpg',
+            rating: 9,
+            comment: 'Delicious!',
+        }
+    ];
 
-ramenItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const image = item.getAttribute('data-image');
-        const name = item.getAttribute('data-name');
-        selectedRamenImage.src = image;
-        selectedRamenName.textContent = name;
+    // Function to display ramen details
+    function displayRamenDetails(index) {
+        const ramen = ramenData[index];
+        ramenName.textContent = ramen.name;
+        ramenRestaurant.textContent = ramen.restaurant;
+        ratingDisplay.textContent = ramen.rating;
+        commentDisplay.textContent = ramen.comment;
+        document.querySelector('.holder').src = ramen.image;
+    }
+
+    // Add click event listeners to each ramen image
+    ramenImages.forEach((img, index) => {
+        img.addEventListener('click', () => displayRamenDetails(index));
     });
-});
 
-submitButton.addEventListener('click', () => {
-    const rating = ratingInput.value;
-    const comment = commentInput.value;
-    const ramenName = selectedRamenName.textContent;
-    const ramenImage = selectedRamenImage.src;
+    // Handle form submission for adding new ramen
+    newRamenForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent the form from submitting
 
-    // Here you can add logic to store the rating and comment
-    // For example, you can send it to a server or store it in local storage
+        // Get form values
+        const name = document.querySelector('#new-name').value;
+        const restaurant = document.querySelector('#new-restaurant').value;
+        const image = document.querySelector('#new-image').value;
+        const rating = document.querySelector('#new-rating').value;
+        const comment = document.querySelector('#new-comment').value;
 
-    console.log('Ramen:', ramenName);
-    console.log('Image:', ramenImage);
-    console.log('Rating:', rating);
-    console.log('Comment:', comment);
+        // Create a new ramen object
+        const newRamen = {
+            name,
+            restaurant,
+            image,
+            rating,
+            comment
+        };
 
-    // Clear the form
-    ratingInput.value = '';
-    commentInput.value = '';
+        // Add the new ramen to the ramenData array
+        ramenData.push(newRamen);
+
+        // Create a new image element for the ramen
+        const newImg = document.createElement('img');
+        newImg.src = newRamen.image;
+        newImg.alt = newRamen.name;
+
+        // Add a click event listener to the new image
+        newImg.addEventListener('click', () => displayRamenDetails(ramenData.length - 1));
+
+        // Append the new image to the #ramen div
+        document.querySelector('#ramen').appendChild(newImg);
+
+        // Reset the form
+        newRamenForm.reset();
+    });
 });
