@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Get references to the DOM elements
+
     const ramenImages = document.querySelectorAll('#ramen img');
     const ramenName = document.querySelector('.name');
     const ramenRestaurant = document.querySelector('.restaurant');
@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const commentDisplay = document.querySelector('#comment-display');
     const newRamenForm = document.querySelector('#new-ramen');
 
-    // Define an array of ramen objects (you can expand this with more data)
     const ramenData = [
         {
             name: 'Gyukotsu',
