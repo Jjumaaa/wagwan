@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    
     const ramenImages = document.querySelectorAll('#ramen img');
     const ramenName = document.querySelector('.name');
     const ramenRestaurant = document.querySelector('.restaurant');
@@ -8,42 +6,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const commentDisplay = document.querySelector('#comment-display');
     const newRamenForm = document.querySelector('#new-ramen');
 
-    const ramenData = [
+    let ramenData = [
+        {
+            name: 'kojiro',
+            restaurant: 'Menya',
+            image: 'assets/ramen/kojiro.jpg',
+            rating: 6,
+            comment: 'Good enough',
+        },
         {
             name: 'Gyukotsu',
             restaurant: 'Ichiran',
             image: 'assets/ramen/gyukotsu.jpg',
-            rating: 8,
-            comment: 'Mouth-watering.',
-        },
-        {
-            name: 'Kojiro',
-            restaurant: 'Menya',
-            image: 'assets/ramen/kojiro.jpg',
-            rating: 6,
-            comment: 'Very flavorful.',
-        },
-        {
-            name: 'Naruto',
-            restaurant: 'Ramen Nagi',
-            image: 'assets/ramen/naruto.jpg',
             rating: 7,
-            comment: 'Yummy.',
+            comment: 'Tasty',
         },
         {
             name: 'Nirvana',
-            restaurant: 'Ramen-ya',
+            restaurant: 'Ramen Nagi',
             image: 'assets/ramen/nirvana.jpg',
-            rating: 8,
-            comment: 'Sweet and tasty.',
+            rating: 5,
+            comment: 'Average',
         },
         {
             name: 'Shoyu',
             restaurant: 'Ichiran',
             image: 'assets/ramen/shoyu.jpg',
-            rating: 9,
-            comment: 'Delicious!',
-        }
+            rating: 4,
+            comment: 'Can do better',
+        },
+        {
+            name: 'Naruto',
+            restaurant: 'Ramen Nagi',
+            image: 'assets/ramen/naruto.jpg',
+            rating: 3,
+            comment: 'Try to make it better next time',
+        },
     ];
 
     // Function to display ramen details
@@ -51,51 +49,53 @@ document.addEventListener('DOMContentLoaded', () => {
         const ramen = ramenData[index];
         ramenName.textContent = ramen.name;
         ramenRestaurant.textContent = ramen.restaurant;
-        ratingDisplay.textContent = ramen.rating;
-        commentDisplay.textContent = ramen.comment;
+        ratingDisplay.textContent = ramen.rating || 'N/A';
+        commentDisplay.textContent = ramen.comment || '';
         document.querySelector('.holder').src = ramen.image;
     }
 
-    // Add click event listeners to each ramen image
+    // Add click event listeners to ramen images
     ramenImages.forEach((img, index) => {
         img.addEventListener('click', () => displayRamenDetails(index));
     });
 
-    // Handle form submission for adding new ramen
+    // Handle form submission
     newRamenForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent the form from submitting
+        e.preventDefault();
 
-        // Get form values
         const name = document.querySelector('#new-name').value;
         const restaurant = document.querySelector('#new-restaurant').value;
         const image = document.querySelector('#new-image').value;
         const rating = document.querySelector('#new-rating').value;
         const comment = document.querySelector('#new-comment').value;
 
-        // Create a new ramen object
         const newRamen = {
             name,
             restaurant,
             image,
             rating,
-            comment
+            comment,
         };
 
-        // Add the new ramen to the ramenData array
         ramenData.push(newRamen);
 
-        // Create a new image element for the ramen
+        // Create a new image element
         const newImg = document.createElement('img');
         newImg.src = newRamen.image;
         newImg.alt = newRamen.name;
 
-        // Add a click event listener to the new image
+        // Add click event listener to the new image
         newImg.addEventListener('click', () => displayRamenDetails(ramenData.length - 1));
 
-        // Append the new image to the #ramen div
+        // Append the new image to the ramen container
         document.querySelector('#ramen').appendChild(newImg);
 
         // Reset the form
         newRamenForm.reset();
     });
+
+    // Display the first ramen by default
+    if (ramenData.length > 0) {
+        displayRamenDetails(0);
+    }
 });
